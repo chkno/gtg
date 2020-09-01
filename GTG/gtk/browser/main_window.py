@@ -894,14 +894,17 @@ class MainWindow(Gtk.ApplicationWindow):
 
             return True
 
-    def on_task_treeview_key_press_event(self, treeview, event):
+    def on_treeview_key_press_event(self, treeview, event, popup_menu):
         keyname = Gdk.keyval_name(event.keyval)
         is_shift_f10 = (keyname == "F10" and
                         event.get_state() & Gdk.ModifierType.SHIFT_MASK)
 
         if is_shift_f10 or keyname == "Menu":
-            self.open_menu.popup_at_pointer(event)
+            popup_menu.popup_at_pointer(event)
             return True
+
+    def on_task_treeview_key_press_event(self, treeview, event):
+        return self.on_treeview_key_press_event(treeview, event, self.open_menu)
 
     def on_closed_task_treeview_button_press_event(self, treeview, event):
         if event.button == 3:
@@ -924,13 +927,7 @@ class MainWindow(Gtk.ApplicationWindow):
             return True
 
     def on_closed_task_treeview_key_press_event(self, treeview, event):
-        keyname = Gdk.keyval_name(event.keyval)
-        is_shift_f10 = (keyname == "F10" and
-                        event.get_state() & Gdk.ModifierType.SHIFT_MASK)
-
-        if is_shift_f10 or keyname == "Menu":
-            self.closed_menu.popup_at_pointer(event)
-            return True
+        return self.on_treeview_key_press_event(treeview, event, self.closed_menu)
 
     def on_add_task(self, widget=None):
         tags = [tag for tag in self.get_selected_tags() if tag.startswith('@')]
