@@ -903,6 +903,16 @@ class MainWindow(Gtk.ApplicationWindow):
             popup_menu.popup_at_pointer(event)
             return True
 
+        if keyname == 'j':
+            treeview.emit("move-cursor", Gtk.MovementStep.DISPLAY_LINES, 1)
+            return True
+        if keyname == 'k':
+            treeview.emit("move-cursor", Gtk.MovementStep.DISPLAY_LINES, -1)
+            return True
+        if keyname == 'h':
+            treeview.emit("select-cursor-parent")
+            return True
+
     def on_task_treeview_key_press_event(self, treeview, event):
         return self.on_treeview_key_press_event(treeview, event, self.open_menu)
 
